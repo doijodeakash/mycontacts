@@ -10,6 +10,7 @@ connectDB();
 app.use(express.json());
 // console.log("connecton--->", process.env.CONNECTION_STRING);
 app.use("/api/contact", require("./routes/contactRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 app.use(errorHandler);
 
 app.listen(port, () => {
