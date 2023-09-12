@@ -2,10 +2,11 @@ const asyncHandler = require("express-async-handler");
 const Contact = require("../models/contact");
 //@des Get all contact
 //@route GET /api/contacts
-//@access public
+//@access private
 
 const getAllContact = asyncHandler(async (req, res) => {
-  const contact = await Contact.find();
+  console.log("req.user.id", req.user.id);
+  const contact = await Contact.find({ userId: req.user.id });
   res.status(200).json(contact);
 });
 
@@ -35,7 +36,12 @@ const createContact = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("All fields are requires");
   }
-  const contact = await Contact.create({ name, email, phone });
+  const contact = await Contact.create({
+    userId: req.user.id,
+    name,
+    email,
+    phone,
+  });
   res
     .status(201)
     .json({ message: "Contact Created successfully", data: contact });
@@ -50,6 +56,10 @@ const updateContact = asyncHandler(async (req, res) => {
   if (!contact) {
     res.status(404);
     throw new Error("Contact not found");
+  }
+  if (contact.userId.toString() !== req.user.id) {
+    res.status(403);
+    throw new Error("User don't have the permission to update the contact");
   }
 
   const updatedContact = await Contact.findByIdAndUpdate(
@@ -72,6 +82,10 @@ const deleteContact = asyncHandler(async (req, res) => {
   if (!contact) {
     res.status(404);
     throw new Error("Contact not found");
+  }
+  if (contact.userId.toString() !== req.user.id) {
+    res.status(403);
+    throw new Error("User don't have the permission to update the contact");
   }
 
   const deletedContact = await Contact.findOneAndRemove(req.params.id);
