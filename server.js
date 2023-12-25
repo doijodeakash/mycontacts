@@ -17,13 +17,13 @@ app.use(
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
   })
 );
-// console.log("connecton--->", process.env.CONNECTION_STRING);
 app.use("/api/contact", require("./routes/contactRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use(errorHandler);
 
 app.listen(port || 8080, () => {
   console.log("server running on port %d", port);
+  console.log("--------------------------------------------------------------------------------->", process.env.CONNECTION_STRING);
 });
 
 /* MongoDB ConnectionString
