@@ -4,7 +4,7 @@ const { connectDB } = require("./config/dbConnection");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 // connectDB();
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use("/api/contact", require("./routes/contactRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use(errorHandler);
 
-app.listen(port || 5000, () => {
+app.listen(port || 8080, () => {
   console.log("server running on port %d", port);
 });
 
